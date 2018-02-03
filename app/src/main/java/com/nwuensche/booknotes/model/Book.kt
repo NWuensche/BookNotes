@@ -10,7 +10,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "book")
 data class Book(
         @PrimaryKey(autoGenerate = true)
-        var id: Int = 0,
+        var id: Int = 0,// TODO Title als Primary Key
         var title: String = "",
         var info: String = ""
 )

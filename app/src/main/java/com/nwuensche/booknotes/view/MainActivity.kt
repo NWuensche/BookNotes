@@ -1,5 +1,6 @@
 package com.nwuensche.booknotes.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -7,6 +8,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.text.SpannableStringBuilder
 import android.view.Menu
 import android.view.MenuItem
 import com.nwuensche.booknotes.R
@@ -15,31 +17,39 @@ import com.nwuensche.booknotes.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import org.jetbrains.anko.*
+import org.jetbrains.anko.design.textInputEditText
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainView {
+
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, com.nwuensche.booknotes.view.MenuView {
 
     private lateinit var presenter: MainPresenter
     override lateinit var context: Context
 
-    override fun showBookNotes(notes: String) {
-        helloText.text = notes
-    }
-
-    override fun showBooks(books: List<Book>) {
-        for(book in books) {
-            nav_view.menu.add(book.title)
+    override fun showBookNotes(title: String, notes: String) {
+        runOnUiThread {
+            this.title = title
+            notesView.text = SpannableStringBuilder(notes)
         }
     }
 
-    override fun showDialog(title: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun updateBookList(books: List<Book>) {
+        runOnUiThread {
+            //nav_view.menu.clear()
+            //val addItem = nav_view.menu.itemsSequence().find { it.title == "Add Book"}
+            //TODO Update besser machen
+            //nav_view.menu.clear()
+            for (book in books) {
+                nav_view.menu.add(book.title)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        //TODO 1. Buch anzeigen2
 
         presenter = MainPresenter(this).apply { onCreate() }
         context = applicationContext
@@ -55,7 +65,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-
     }
 
     override fun onBackPressed() {
@@ -77,7 +86,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_save -> {
+                presenter.updateBook(title = this.title.toString(), notes = notesView.text.toString())
+                toast("Saved!")
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -86,7 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.title) {
             "Add Book"-> {
-                presenter.addBook()
+                getAndSaveNewTitle()
             }
             else -> {
                 presenter.showBookNotes(item.title.toString())
@@ -95,5 +108,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun getAndSaveNewTitle() {
+        alert {
+            title = "New Book Title"
+            customView {
+                val titleView = textInputEditText()
+                okButton { presenter.addBook(titleView.text.toString()) }
+            }
+        }.show()
     }
 }
