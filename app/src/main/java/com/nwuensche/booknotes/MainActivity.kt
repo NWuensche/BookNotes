@@ -1,5 +1,6 @@
 package com.nwuensche.booknotes
 
+import android.arch.persistence.room.Room
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -8,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.nwuensche.booknotes.model.Book
+import com.nwuensche.booknotes.model.AppDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -29,7 +32,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        nav_view.menu.add("Test")
+        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java,  "db").build()
+        db.bookDao().insertAll(Book(title = "Test2", info = "test2"), Book(title = "Test1", info = "test"))
+
+        for(book in db.bookDao().getAll()) {
+            nav_view.menu.add(book.title)
+        }
     }
 
     override fun onBackPressed() {
@@ -61,21 +69,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.add_book -> {
                 // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
             }
         }
 
