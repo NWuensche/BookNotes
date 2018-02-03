@@ -1,11 +1,19 @@
 package com.nwuensche.booknotes.presenter
 
 import android.arch.persistence.room.Room
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import com.nwuensche.booknotes.model.AppDatabase
 import com.nwuensche.booknotes.model.Book
 import com.nwuensche.booknotes.view.MenuView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import com.android.volley.VolleyError
+import org.json.JSONObject
+import com.android.volley.toolbox.JsonObjectRequest
+
+
 
 /**
  * Created by nwuensche on 03.02.18.
@@ -50,13 +58,23 @@ class MainPresenter(private val view: MenuView) : Presenter {
     }
 
     fun addBook(newTitle: String) {
-        Observable
-                .fromCallable { db.bookDao().insertAll(Book(title = newTitle)) }
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe()
+        val exampleRequestQueue = Volley.newRequestQueue(view.context)
 
-        this.showBooks()
+        val jsObjRequest = JsonObjectRequest(Request.Method.GET, "https://openlibrary.org/api/books?bibkeys=ISBN:$newTitle&jscmd=details&format=json",
+                null, Response.Listener<JSONObject>
+            { response
+            ->
+                Observable
+                        .fromCallable { db.bookDao().insertAll(Book(title = ((response["ISBN:$newTitle"] as JSONObject)["details"] as JSONObject)["title"]as String))}
+                        .observeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.newThread())
+                        .subscribe {this.showBooks()}
+            },
+                Response.ErrorListener {
+                    // TODO Auto-generated method stub
+                     })
+        exampleRequestQueue.add(jsObjRequest)
+
     }
 
     fun updateBook(title: String, notes: String) {
