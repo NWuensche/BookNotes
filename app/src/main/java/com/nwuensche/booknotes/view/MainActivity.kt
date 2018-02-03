@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun getAndSaveNewTitle() {
         alert {
-            title = "New Book Title"
+            title = "ISBN of New Book"
             customView {
                 val titleView = textInputEditText()
                 okButton { presenter.addBook(titleView.text.toString()) }

@@ -9,10 +9,7 @@ import com.nwuensche.booknotes.model.Book
 import com.nwuensche.booknotes.view.MenuView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import com.android.volley.VolleyError
-import org.json.JSONObject
-import com.android.volley.toolbox.JsonObjectRequest
-
+import com.android.volley.toolbox.StringRequest
 
 
 /**
@@ -57,15 +54,14 @@ class MainPresenter(private val view: MenuView) : Presenter {
                 }
     }
 
-    fun addBook(newTitle: String) {
+    fun addBook(isbn: String) {
         val exampleRequestQueue = Volley.newRequestQueue(view.context)
 
-        val jsObjRequest = JsonObjectRequest(Request.Method.GET, "https://openlibrary.org/api/books?bibkeys=ISBN:$newTitle&jscmd=details&format=json",
-                null, Response.Listener<JSONObject>
+        val jsObjRequest = StringRequest(Request.Method.GET, "https://www.amazon.com/s/field-keywords=$isbn", Response.Listener<String>
             { response
             ->
                 Observable
-                        .fromCallable { db.bookDao().insertAll(Book(title = ((response["ISBN:$newTitle"] as JSONObject)["details"] as JSONObject)["title"]as String))}
+                        .fromCallable { db.bookDao().insertAll(Book(title = response.split("<h2 data-attribute=\"")[1].split("\"")[0]))}
                         .observeOn(Schedulers.io())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe {this.showBooks()}
@@ -74,7 +70,6 @@ class MainPresenter(private val view: MenuView) : Presenter {
                     // TODO Auto-generated method stub
                      })
         exampleRequestQueue.add(jsObjRequest)
-
     }
 
     fun updateBook(title: String, notes: String) {
