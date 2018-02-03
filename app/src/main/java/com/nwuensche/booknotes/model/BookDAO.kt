@@ -13,6 +13,12 @@ interface BookDAO {
     @Query("SELECT * FROM book")
     fun getAll(): List<Book>
 
+    @Query("SELECT * FROM book WHERE book.title = :arg0")
+    fun getBook(title: String): Book
+
     @Insert
     fun insertAll(vararg books: Book)
+
+    @Query("DELETE FROM book")
+    fun nuke()
 }

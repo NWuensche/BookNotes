@@ -2,7 +2,6 @@ package com.nwuensche.booknotes.presenter
 
 import android.arch.persistence.room.Room
 import com.nwuensche.booknotes.model.AppDatabase
-import com.nwuensche.booknotes.view.MainActivity
 import com.nwuensche.booknotes.view.MainView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -29,5 +28,21 @@ class MainPresenter(private val view: MainView) : Presenter {
 
     fun showBooks() {
         view.showBooks(db.bookDao().getAll())
+    }
+
+    fun showBookNotes(bookTitle: String) {
+        Observable
+                .fromCallable { db.bookDao().getBook(bookTitle) }
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    book
+                    ->
+                    view.showBookNotes(book.info)
+                }
+    }
+
+    fun addBook() {
+       view.showDialog("Write Book Title")
     }
 }

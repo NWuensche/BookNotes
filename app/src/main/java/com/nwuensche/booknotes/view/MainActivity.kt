@@ -14,16 +14,26 @@ import com.nwuensche.booknotes.model.Book
 import com.nwuensche.booknotes.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainView {
 
-    var presenter: MainPresenter? = null
+    private lateinit var presenter: MainPresenter
     override lateinit var context: Context
+
+    override fun showBookNotes(notes: String) {
+        helloText.text = notes
+    }
 
     override fun showBooks(books: List<Book>) {
         for(book in books) {
             nav_view.menu.add(book.title)
         }
+    }
+
+    override fun showDialog(title: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,9 +84,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.add_book -> {
-                // Handle the camera action
+        when (item.title) {
+            "Add Book"-> {
+                presenter.addBook()
+            }
+            else -> {
+                presenter.showBookNotes(item.title.toString())
             }
         }
 

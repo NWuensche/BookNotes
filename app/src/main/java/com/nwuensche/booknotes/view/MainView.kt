@@ -7,7 +7,9 @@ import com.nwuensche.booknotes.model.Book
  * Created by nwuensche on 03.02.18.
  */
 interface MainView {
-    fun showBooks(books: List<Book>)
-
     val context: Context
+
+    fun showBooks(books: List<Book>)
+    fun showDialog(title: String)
+    fun showBookNotes(notes: String)
 }
