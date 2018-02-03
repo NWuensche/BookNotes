@@ -9,8 +9,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.nwuensche.booknotes.model.Book
 import com.nwuensche.booknotes.model.AppDatabase
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.operators.observable.ObservableBlockingSubscribe.subscribe
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -32,9 +35,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java,  "db").build()
-        db.bookDao().insertAll(Book(title = "Test2", info = "test2"), Book(title = "Test1", info = "test"))
+        Observable
+                .fromCallable { Room.databaseBuilder(applicationContext, AppDatabase::class.java,  "db").build() }
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.io())
+                .subscribe { database -> showDBItems(database as AppDatabase) }
+    }
 
+    private fun showDBItems(db: AppDatabase) {
         for(book in db.bookDao().getAll()) {
             nav_view.menu.add(book.title)
         }
