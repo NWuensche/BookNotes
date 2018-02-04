@@ -4,8 +4,13 @@
     tools:showIn="navigation_view">
 
         <item
-            android:id="@+id/add_book"
+            android:id="@+id/add_book_man"
             android:icon="@android:drawable/ic_input_add"
-            android:title="Add Book" />
+            android:title="Add Book by Hand" />
+
+        <item
+            android:id="@+id/add_book_photo"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Add Book Photo" />
 
 </menu>

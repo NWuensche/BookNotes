@@ -1,7 +1,7 @@
 package com.nwuensche.booknotes.view
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -19,11 +19,17 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.textInputEditText
+import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
+import android.R.attr.data
+import android.app.Activity
+import android.support.v7.app.AlertDialog
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, com.nwuensche.booknotes.view.MenuView {
 
+
     private lateinit var presenter: MainPresenter
+
     override lateinit var context: Context
 
     override fun showBookNotes(title: String, notes: String) {
@@ -98,8 +104,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.title) {
-            "Add Book"-> {
+            "Add Book by Hand" -> {
                 getAndSaveNewTitle()
+            }
+            "Add Book Photo" -> {
+                val intent = Intent(applicationContext, ScannerActivity::class.java)
+                intent.putExtra("key", "value")
+                startActivityForResult(intent, 1337)
+
             }
             else -> {
                 presenter.showBookNotes(item.title.toString())
@@ -108,6 +120,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1337) {
+            if (data!!.hasExtra("ISBN")) {
+                presenter.addBook(data.getStringExtra("ISBN"))
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun getAndSaveNewTitle() {

@@ -32,7 +32,7 @@ class MainPresenter(private val view: MenuView) : Presenter {
                 }
     }
 
-    fun showBooks() {
+    private fun showBooks() {
         Observable
                 .fromCallable { db.bookDao().getAll() }
                 .subscribeOn(Schedulers.newThread())
@@ -66,9 +66,8 @@ class MainPresenter(private val view: MenuView) : Presenter {
                         .subscribeOn(Schedulers.newThread())
                         .subscribe {this.showBooks()}
             },
-                Response.ErrorListener {
-                    // TODO Auto-generated method stub
-                     })
+                Response.ErrorListener {}
+        )
         exampleRequestQueue.add(jsObjRequest)
     }
 
