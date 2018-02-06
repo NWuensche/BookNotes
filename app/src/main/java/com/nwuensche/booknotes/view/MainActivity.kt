@@ -23,13 +23,16 @@ import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
 import android.R.attr.data
 import android.app.Activity
 import android.support.v7.app.AlertDialog
+import android.view.SubMenu
+
+
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, com.nwuensche.booknotes.view.MenuView {
 
 
     private lateinit var presenter: MainPresenter
-
+    var list: ArrayList<MenuItem> = arrayListOf()
     override lateinit var context: Context
 
     override fun showBookNotes(title: String, notes: String) {
@@ -42,11 +45,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun updateBookList(books: List<Book>) {
         runOnUiThread {
             //nav_view.menu.clear()
-            //val addItem = nav_view.menu.itemsSequence().find { it.title == "Add Book"}
+
             //TODO Update besser machen
-            //nav_view.menu.clear()
-            for (book in books) {
-                nav_view.menu.add(book.title)
+            nav_view.menu.apply {
+              /*  val addItemHand = itemsSequence().find { it.title == "Add Book by Hand"}?
+                val addItemPhoto = itemsSequence().find { it.title == "Add Book Photo"}?.itemId
+                if (addItemHand != null) {
+                    clear()
+                }
+                if (addItemPhoto != null) {
+                    add(addItemPhoto)
+                }
+                add(R.drawable.ic_add_black_24dp, "Add Book by Hand")*/
+                //itemsSequence().filter { !it.title.contains("Add") }.map { it.itemId }.forEach { removeItem(it) }
+                for(i in list) {
+                    this.removeItem(i.itemId)
+                }
+                list.clear()
+                for (i in 0 until books.size) {
+                    list.add(add(Menu.NONE, Menu.FIRST + 2, Menu.NONE, books[i].title))
+                }
             }
         }
     }
@@ -104,7 +122,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             "Add Book Photo" -> {
                 val intent = Intent(applicationContext, ScannerActivity::class.java)
-                intent.putExtra("key", "value")
                 startActivityForResult(intent, 1337)
 
             }
