@@ -10,7 +10,7 @@
 
         <item
             android:id="@+id/add_book_photo"
-            android:icon="@android:drawable/ic_input_add"
-            android:title="Add Book Photo" />
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="Add Book by Photo" />
 
 </menu>

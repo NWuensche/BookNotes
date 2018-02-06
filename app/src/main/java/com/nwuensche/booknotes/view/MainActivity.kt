@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "Add Book by Hand" -> {
                 getAndSaveNewTitle()
             }
-            "Add Book Photo" -> {
+            "Add Book by Photo" -> {
                 val intent = Intent(applicationContext, ScannerActivity::class.java)
                 startActivityForResult(intent, 1337)
 
