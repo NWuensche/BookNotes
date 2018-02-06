@@ -1,10 +1,10 @@
 package com.nwuensche.booknotes.view
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -17,15 +17,11 @@ import com.nwuensche.booknotes.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.customView
 import org.jetbrains.anko.design.textInputEditText
-import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
-import android.R.attr.data
-import android.app.Activity
-import android.support.v7.app.AlertDialog
-import android.view.SubMenu
-
-
+import org.jetbrains.anko.okButton
+import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, com.nwuensche.booknotes.view.MenuView {
