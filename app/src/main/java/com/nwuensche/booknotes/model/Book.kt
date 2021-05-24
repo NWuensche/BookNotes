@@ -1,8 +1,8 @@
 package com.nwuensche.booknotes.model
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.ColumnInfo
 
 /**
  * Created by nwuensche on 03.02.18.

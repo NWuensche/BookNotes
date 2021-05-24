@@ -2,10 +2,6 @@ package com.nwuensche.booknotes.view
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import androidx.core.app.NavUtils
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.SparseArray
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture
 import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic
@@ -16,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_scanner.*
 import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 
 
 class ScannerActivity : AppCompatActivity(), BarcodeRetriever {

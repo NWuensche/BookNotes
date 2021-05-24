@@ -1,6 +1,6 @@
 package com.nwuensche.booknotes.presenter
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
