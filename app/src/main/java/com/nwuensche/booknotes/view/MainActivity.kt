@@ -1,6 +1,5 @@
 package com.nwuensche.booknotes.view
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -119,7 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 getAndSaveNewTitle()
             }
             "Add Book by Photo" -> {
-                val intent = Intent(applicationContext, ScannerActivity::class.java)
+                val intent = Intent(applicationContext, BarCodeActivity::class.java)
                 startActivityForResult(intent, 1337)
 
             }
@@ -132,10 +131,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    //if went back in qr code activity, then resultCode is RESULT_CANCELED
+    //if Camera Permission denied or touch outside of dialog, then data["value"] is "" (no empty QR Code can exist)
+    //if successful data["value"] is set
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == 1337) {
-            if (data!!.hasExtra("ISBN")) {
-                presenter.addBook(data.getStringExtra("ISBN"))
+        when {
+            resultCode == RESULT_CANCELED -> { // Went back in App -> Do nothing
+            }
+            data?.getStringExtra("value") == "" -> { //Permission error
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.permission_denied_camera),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            else -> { //Have QR Code
+                data?.getStringExtra("value")?.let {
+                    presenter.addBook(it)
+                } //Add String if present
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

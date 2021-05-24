@@ -8,13 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.budiyev.android.codescanner.*
 
-class QRCodeActivity : AppCompatActivity() {
+class BarCodeActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     private val REQUEST_CODE = 1
     private var alreadyAskedPermission = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_qrcode)
+        setContentView(R.layout.activity_barcode)
 //        askPermissionCameraOrClose()
         val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
 
