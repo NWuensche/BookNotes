@@ -3,7 +3,7 @@ package com.nwuensche.booknotes.view
 import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.NavUtils
+import androidx.core.app.NavUtils
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.SparseArray
