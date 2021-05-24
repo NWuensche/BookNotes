@@ -57,7 +57,7 @@ class MainPresenter(private val view: MenuView) : Presenter {
     fun addBook(isbn: String) {
         val exampleRequestQueue = Volley.newRequestQueue(view.context)
 
-        val jsObjRequest = StringRequest(Request.Method.GET, "https://www.amazon.com/s/field-keywords=$isbn", Response.Listener<String>
+        val jsObjRequest = object: StringRequest(Request.Method.GET, "https://www.amazon.com/s/?field-keywords=$isbn", Response.Listener<String>
             { response
             ->
                 Observable
@@ -67,7 +67,22 @@ class MainPresenter(private val view: MenuView) : Presenter {
                         .subscribe {this.showBooks()}
             },
                 Response.ErrorListener {}
-        )
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = mutableMapOf(
+                    "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0",
+                    "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                    "Accept-Language" to "en-US,en;q=0.5",
+                    "DNT" to "1",
+                    "Connection" to "keep-alive",
+                    "Cookie" to "i18n-prefs=USD; appstore-devportal-locale=en_US",
+                    "Upgrade-Insecure-Requests" to "1",
+                    "Sec-GPC" to "1",
+                    "Cache-Control" to "max-age=0"
+                )
+                return headers
+            }
+        }
         exampleRequestQueue.add(jsObjRequest)
     }
 
