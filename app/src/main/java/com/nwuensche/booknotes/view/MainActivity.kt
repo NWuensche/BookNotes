@@ -12,13 +12,11 @@ import android.widget.EditText
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.nwuensche.booknotes.R
 import com.nwuensche.booknotes.model.Book
 import com.nwuensche.booknotes.presenter.MainPresenter
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.customView
 import org.jetbrains.anko.design.textInputEditText
@@ -34,6 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override lateinit var context: Context
     private val notesView: EditText by lazy {findViewById<EditText>(R.id.notesView)}
     private val nav_view: NavigationView by lazy {findViewById<NavigationView>(R.id.nav_view)}
+    private val toolbar: Toolbar by lazy {findViewById<Toolbar>(R.id.toolbar)}
+    private val drawer_layout: DrawerLayout by lazy {findViewById<DrawerLayout>(R.id.drawer_layout)}
 
     override fun showBookNotes(title: String, notes: String) {
         runOnUiThread {
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
+        setSupportActionBar(toolbar)
         //TODO 1. Buch anzeigen2
 
         presenter = MainPresenter(this).apply { onCreate() }
