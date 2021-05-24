@@ -27,8 +27,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     annotationProcessor 'androidx.room:room-compiler:2.0.0'
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
-    implementation "org.jetbrains.anko:anko-design:$anko_version"
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.github.KingsMentor:MobileVisionBarcodeScanner:2.0.0'
 

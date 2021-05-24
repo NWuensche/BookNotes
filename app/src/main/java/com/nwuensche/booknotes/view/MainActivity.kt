@@ -1,14 +1,17 @@
 package com.nwuensche.booknotes.view
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.GravityCompat
 import android.text.SpannableStringBuilder
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,11 +20,6 @@ import com.google.android.material.navigation.NavigationView
 import com.nwuensche.booknotes.R
 import com.nwuensche.booknotes.model.Book
 import com.nwuensche.booknotes.presenter.MainPresenter
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.customView
-import org.jetbrains.anko.design.textInputEditText
-import org.jetbrains.anko.okButton
-import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, com.nwuensche.booknotes.view.MenuView {
@@ -107,7 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.action_save -> {
                 presenter.updateBook(title = this.title.toString(), notes = notesView.text.toString())
-                toast("Saved!")
+                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -144,12 +142,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun getAndSaveNewTitle() {
-        alert {
-            title = "ISBN of New Book"
-            customView {
-                val titleView = textInputEditText()
-                okButton { presenter.addBook(titleView.text.toString()) }
-            }
-        }.show()
+        val dialog = AlertDialog.Builder(this) //TODO Material Design?
+        val dialogLayout = LayoutInflater.from(this).inflate(R.layout.add_isbn_dialog, null)
+        dialog.setView(dialogLayout)
+
+        dialog.setTitle("ISBN of New Book")
+        dialog.setPositiveButton("OK") { d, i ->
+            presenter.addBook(dialogLayout.findViewById<EditText>(R.id.isdn_edittext).text.toString())
+        }
+        dialog.show()
     }
 }

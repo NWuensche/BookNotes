@@ -8,7 +8,6 @@ import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic
 import com.google.android.gms.vision.barcode.Barcode
 import com.nwuensche.booknotes.R
 
-import kotlinx.android.synthetic.main.activity_scanner.*
 import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever
 import android.content.Intent
 import android.view.View
