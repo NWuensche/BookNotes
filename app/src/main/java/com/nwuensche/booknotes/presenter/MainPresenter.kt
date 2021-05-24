@@ -1,5 +1,6 @@
 package com.nwuensche.booknotes.presenter
 
+import android.content.Context
 import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
@@ -10,6 +11,9 @@ import com.nwuensche.booknotes.view.MenuView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import com.android.volley.toolbox.StringRequest
+import com.marcoscg.licenser.Library
+import com.marcoscg.licenser.License
+import com.marcoscg.licenser.LicenserDialog
 
 
 /**
@@ -98,5 +102,41 @@ class MainPresenter(private val view: MenuView) : Presenter {
                     ->
                     db.bookDao().insertAll(book.apply { info = notes })
                 }
+    }
+
+    fun showLicenses(c: Context) { //Does not work for some reason with view.context
+        LicenserDialog(c)
+            .setLibrary(
+                Library(
+                    "Android Support Libraries",
+                    "https://developer.android.com/topic/libraries/support-library/index.html",
+                    License.APACHE2
+                )
+            )
+            .setLibrary(
+                Library(
+                    "Licenser",
+                    "https://github.com/marcoscgdev/Licenser",
+                    License.MIT
+                )
+            )
+            .setLibrary(
+                Library(
+                    "Code Scanner",
+                    "https://github.com/yuriy-budiyev/code-scanner",
+                    License.MIT
+                )
+            )
+            .setLibrary(
+                Library(
+                    "Rx Java",
+                    "https://github.com/ReactiveX/RxJava",
+                    License.APACHE2
+                )
+            )
+            .setPositiveButton(
+                android.R.string.ok
+            ) { dialogInterface, _ -> dialogInterface.dismiss() }
+            .show()
     }
 }

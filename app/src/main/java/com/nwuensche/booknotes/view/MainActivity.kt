@@ -107,6 +107,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
                 return true
             }
+            R.id.license -> {
+                presenter.showLicenses(this)
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
