@@ -61,7 +61,9 @@ class MainPresenter(private val view: MenuView) : Presenter {
             { response
             ->
                 Observable
-                        .fromCallable { db.bookDao().insertAll(Book(title = response.split("<h2 data-attribute=\"")[1].split("\"")[0]))}
+                        .fromCallable { db.bookDao().insertAll(Book(title =
+
+                            response.split("a-size-medium")[1].split(">")[1].split("</")[0]))} //Book Title
                         .observeOn(Schedulers.io())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe {this.showBooks()}
@@ -69,7 +71,7 @@ class MainPresenter(private val view: MenuView) : Presenter {
                 Response.ErrorListener {}
         ) {
             override fun getHeaders(): MutableMap<String, String> {
-                val headers = mutableMapOf(
+                val headers = mutableMapOf( //Search does not work without these headers
                     "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0",
                     "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
                     "Accept-Language" to "en-US,en;q=0.5",
