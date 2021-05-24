@@ -8,8 +8,10 @@ import androidx.core.view.GravityCompat
 import android.text.SpannableStringBuilder
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.android.material.navigation.NavigationView
 import com.nwuensche.booknotes.R
 import com.nwuensche.booknotes.model.Book
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var presenter: MainPresenter
     var list: ArrayList<MenuItem> = arrayListOf()
     override lateinit var context: Context
+    private val notesView: EditText by lazy {findViewById<EditText>(R.id.notesView)}
+    private val nav_view: NavigationView by lazy {findViewById<NavigationView>(R.id.nav_view)}
 
     override fun showBookNotes(title: String, notes: String) {
         runOnUiThread {
@@ -68,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
         //TODO 1. Buch anzeigen2
 
         presenter = MainPresenter(this).apply { onCreate() }
