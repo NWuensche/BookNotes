@@ -70,7 +70,10 @@ class MainPresenter(private val view: MenuView) : Presenter {
                             response.split("a-size-medium")[1].split(">")[1].split("</")[0]))} //Book Title
                         .observeOn(Schedulers.io())
                         .subscribeOn(Schedulers.newThread())
-                        .subscribe {this.showBooks()}
+                        .subscribe (
+                            {this.showBooks()},
+                            {}
+                        )
             },
                 Response.ErrorListener {}
         ) {
